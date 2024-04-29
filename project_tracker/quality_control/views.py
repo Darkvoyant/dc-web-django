@@ -1,10 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from .models import BugReport, FeatureReport
 from django.views import View
 from django.views.generic import ListView
 from django.views.generic import DetailView
+from .forms import BugReportForm, FeatureRequestForm
 # Create your views here.
 
 
@@ -132,3 +133,25 @@ def feature_detail(request, feature_id):
                   {'feature': feature})
     # response_html = f'<h1>{feature.title}</h1><p>{feature.description}</p>'
     # return HttpResponse(response_html)
+
+
+def add_bug(request):
+    if request.method == 'POST':
+        form = BugReportForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('quality_control:bugs_list')
+    else:
+        form = BugReportForm()
+    return render(request, 'quality_control/bug_report_form.html',{'form': form})
+
+
+def add_feature(request):
+    if request.method == 'POST':
+        form = FeatureRequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('quality_control:features_list')
+    else:
+        form = FeatureRequestForm()
+    return render(request, 'quality_control/feature_request_form.html',{'form': form})

@@ -20,4 +20,7 @@ urlpatterns = [
     # path('bugs/<int:bug_id>/', views.bug_detail, name='bug_detail'),
     # path('features/<int:feature_id>/', views.feature_detail,
     #      name='feature_detail'),
+
+    path('bugs/new/', views.add_bug, name='add_bug'),
+    path('features/new/', views.add_feature, name='add_feature'),
 ]

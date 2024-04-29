@@ -1,0 +1,10 @@
+{% extends 'base/quality_control/base.html' %}
+
+{% block content %}
+    <h2>Добавить предложение об улучшении</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Предложить улучшение</button>
+    </form>
+{% endblock %}
