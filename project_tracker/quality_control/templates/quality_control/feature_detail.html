@@ -1,0 +1,14 @@
+{% extends 'base/quality_control/base.html' %}
+
+{% block content %}
+    <h1>{{ feature.title }}</h1>
+    <p>Проект: {{ feature.project }}</p>
+    {% if feature.task is None %}
+        <p>Нет закрепленной задачи</p>
+    {% else %}
+        <p>Задача: {{ feature.task }}</p>
+    {% endif %}
+    <p>Статус: {{ feature.get_status_display }}</p>
+    <p>Приоритет: {{ feature.get_priority_display }}</p>
+    <p>Описание:</p> <p>{{ feature.description }}</p>
+{% endblock %}

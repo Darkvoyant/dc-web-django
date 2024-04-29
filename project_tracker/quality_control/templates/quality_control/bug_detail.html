@@ -1,0 +1,14 @@
+{% extends 'base/quality_control/base.html' %}
+
+{% block content %}
+    <h1>{{ bug.title }}</h1>
+    <p>Проект: {{ bug.project }}</p>
+    {% if bug.task is None %}
+        <p>Нет закрепленной задачи</p>
+    {% else %}
+        <p>Задача: {{ bug.task }}</p>
+    {% endif %}
+    <p>Статус: {{ bug.get_status_display }}</p>
+    <p>Приоритет: {{ bug.get_priority_display }}</p>
+    <p>Описание:</p> <p>{{ bug.description }}</p>
+{% endblock %}

@@ -5,7 +5,7 @@ app_name = 'tasks'
 
 urlpatterns = [
     # Class-Based Views
-    path('', views.MainPage.as_view(), name='index'),
+    path('', views.MainPage.as_view(), name='main_page'),
     path('projects/', views.ProjectsListView.as_view(), name='projects_list'),
     path('projects/<int:project_id>/', views.ProjectDetailView.as_view(),
          name='project_detail'),
