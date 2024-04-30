@@ -1,6 +1,15 @@
 {% extends 'base/quality_control/base.html' %}
 
 {% block content %}
+    <!-- Ссылка для изменения фичи -->
+    <p><a href="{% url 'quality_control:update_feature' feature.id %}"
+    >Изменить предложение об улучшении</a></p>
+
+    <!-- Кнопка удаления фичи -->
+    <p><a href="{% url 'quality_control:delete_feature' feature_id=feature.id %}"
+          onclick="return confirm('Вы уверены, что хотите удалить это улучшение?')">
+          Удалить улучшение</a></p>
+
     <h1>{{ feature.title }}</h1>
     <p>Проект: {{ feature.project }}</p>
     {% if feature.task is None %}

@@ -6,6 +6,8 @@ from django.views import View
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from .forms import BugReportForm, FeatureRequestForm
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.urls import reverse, reverse_lazy
 # Create your views here.
 
 
@@ -84,6 +86,53 @@ class FeatureDetailView(DetailView):
     #     return HttpResponse(response_html)
 
 
+class BugCreateView(CreateView):
+    model = BugReport
+    form_class = BugReportForm
+    template_name = 'quality_control/bug_report_form.html'
+    success_url = reverse_lazy('quality_control:bugs_list')
+
+
+class FeatureCreateView(CreateView):
+    model = FeatureReport
+    form_class = FeatureRequestForm
+    template_name = 'quality_control/feature_request_form.html'
+    success_url = reverse_lazy('quality_control:features_list')
+
+
+class BugUpdateView(UpdateView):
+    model = BugReport
+    form_class = BugReportForm
+    template_name = 'quality_control/bug_update.html'
+    pk_url_kwarg = 'bug_id'
+    success_url = reverse_lazy('quality_control:bugs_list')
+
+
+class FeatureUpdateView(UpdateView):
+    model = FeatureReport
+    form_class = FeatureRequestForm
+    template_name = 'quality_control/feature_update.html'
+    pk_url_kwarg = 'feature_id'
+    success_url = reverse_lazy('quality_control:features_list')
+
+
+class BugDeleteView(DeleteView):
+    model = BugReport
+    context_object_name = 'bug'
+    pk_url_kwarg = 'bug_id'
+    success_url = reverse_lazy('quality_control:bugs_list')
+    template_name = 'quality_control/bug_confirm_delete.html'
+
+
+class FeatureDeleteView(DeleteView):
+    model = FeatureReport
+    context_object_name = 'feature'
+    pk_url_kwarg = 'feature_id'
+    success_url = reverse_lazy('quality_control:features_list')
+    template_name = 'quality_control/feature_confirm_delete.html'
+
+
+# Function-Based Views
 def main_page(request):
     return render(request, 'quality_control/index.html')
     # bug_url = reverse('quality_control:bugs_list')
@@ -94,7 +143,6 @@ def main_page(request):
     # return HttpResponse(html)
 
 
-# Function-Based Views
 def bugs_list(request):
     bugs = BugReport.objects.all()
     return render(request, 'quality_control/bugs_list.html',
@@ -121,14 +169,14 @@ def features_list(request):
 
 
 def bug_detail(request, bug_id):
-    bug = get_object_or_404(BugReport, id=bug_id)
+    bug = get_object_or_404(BugReport, bug_id=bug_id)
     return render(request, 'quality_control/bug_detail.html', {'bug': bug})
     # response_html = f'<h1>{bug.title}</h1><p>{bug.description}</p>'
     # return HttpResponse(response_html)
 
 
 def feature_detail(request, feature_id):
-    feature = get_object_or_404(FeatureReport, id=feature_id)
+    feature = get_object_or_404(FeatureReport, feature_id=feature_id)
     return render(request, 'quality_control/feature_detail.html',
                   {'feature': feature})
     # response_html = f'<h1>{feature.title}</h1><p>{feature.description}</p>'
@@ -155,3 +203,41 @@ def add_feature(request):
     else:
         form = FeatureRequestForm()
     return render(request, 'quality_control/feature_request_form.html',{'form': form})
+
+
+def update_bug(request, bug_id):
+    bug = get_object_or_404(BugReport, pk=bug_id)
+    if request.method == 'POST':
+        form = BugReportForm(request.POST, instance=bug)
+        if form.is_valid():
+            form.save()
+            return redirect('quality_control:bug_detail', bug_id=bug.id)
+    else:
+        form = BugReportForm(instance=bug)
+    return render(request, 'quality_control/bug_update.html',
+                  {'form': form, 'bug': bug})
+
+
+def update_feature(request, feature_id):
+    feature = get_object_or_404(FeatureReport, pk=feature_id)
+    if request.method == 'POST':
+        form = FeatureRequestForm(request.POST, instance=feature)
+        if form.is_valid():
+            form.save()
+            return redirect('quality_control:feature_detail', feature_id=feature.id)
+    else:
+        form = FeatureRequestForm(instance=feature)
+    return render(request, 'quality_control/feature_update.html',
+                  {'form': form, 'feature': feature})
+
+
+def delete_bug(request, bug_id):
+    bug = get_object_or_404(BugReport, pk=bug_id)
+    bug.delete()
+    return redirect('quality_control:bugs_list')
+
+
+def delete_feature(request, feature_id):
+    feature = get_object_or_404(FeatureReport, pk=feature_id)
+    feature.delete()
+    return redirect('quality_control:features_list')

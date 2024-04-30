@@ -13,6 +13,25 @@ urlpatterns = [
     path('features/<int:feature_id>/', views.FeatureDetailView.as_view(),
          name='feature_detail'),
 
+    # create
+    path('bug/create/', views.BugCreateView.as_view(),
+         name='add_bug'),
+    path('feature/create/', views.FeatureCreateView.as_view(),
+         name='add_feature'),
+
+    # update
+    path('bug/<int:bug_id>/update/', views.BugUpdateView.as_view(),
+         name='update_bug'),
+    path('feature/<int:feature_id>/update/', views.FeatureUpdateView.as_view(),
+         name='update_feature'),
+
+    # delete
+    path('bug/<int:bug_id>/delete/', views.BugDeleteView.as_view(),
+         name='delete_bug'),
+    path('feature/<int:feature_id>/delete/', views.FeatureDeleteView.as_view(),
+         name='delete_feature'),
+
+
     # # Function-Based Views
     # path('', views.main_page, name='main_page'),
     # path('bugs/', views.bugs_list, name='bugs_list'),
@@ -21,6 +40,22 @@ urlpatterns = [
     # path('features/<int:feature_id>/', views.feature_detail,
     #      name='feature_detail'),
 
-    path('bugs/new/', views.add_bug, name='add_bug'),
-    path('features/new/', views.add_feature, name='add_feature'),
+    # # create
+    # path('bugs/new/', views.add_bug, name='add_bug'),
+    # path('features/new/', views.add_feature, name='add_feature'),
+
+    # # update
+    # path('bug/<int:bug_id>/update/', views.update_bug,
+    #      name='update_bug'),
+    #
+    # path('feature/<int:feature_id>/update/', views.update_feature,
+    #      name='update_feature'),
+
+    # # delete
+    # path('bug/<int:bug_id>/delete/', views.delete_bug,
+    #      name='delete_bug'),
+    # path('feature/<int:feature_id>/delete/', views.delete_feature,
+    #      name='delete_feature'),
+
+
 ]
