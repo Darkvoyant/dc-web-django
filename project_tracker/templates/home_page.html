@@ -1,0 +1,6 @@
+{% block content %}
+        <h1>Главная страница</h1>
+        <a href="{% url 'tasks:main_page' %}">Список проектов</a> <br>
+        <a href="{% url 'quality_control:main_page' %}">
+                Раздел "Контроль качества" </a>
+{% endblock %}
